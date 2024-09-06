@@ -1,8 +1,5 @@
-# Usar imagem Node.js como base
+# Usar a imagem Node.js como base
 FROM node:18
-
-# Instalar dependências necessárias para compilar pacotes nativos
-RUN apt-get update && apt-get install -y python3 make g++
 
 # Definir o diretório de trabalho
 WORKDIR /app
@@ -10,8 +7,8 @@ WORKDIR /app
 # Copiar os arquivos do projeto
 COPY . .
 
-# Instalar as dependências do projeto, compilando pacotes nativos se necessário
-RUN npm install --build-from-source
+# Instalar as dependências do projeto
+RUN npm install
 
 # Expor a porta em que o servidor vai rodar
 EXPOSE 3000
