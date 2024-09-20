@@ -6,13 +6,14 @@ const router = express.Router();
 
 // Rota para criar um novo treino
 router.post('/', auth, async (req, res) => {
-  const { startDate, endDate, week } = req.body;
+  const { name, startDate, endDate, week } = req.body;
   try {
     const workout = await Workout.create({
       userId: req.user.id,
       startDate,
       endDate,
       week,
+      name
     });
     res.status(201).json(workout);
   } catch (err) {
