@@ -31,9 +31,10 @@ const Exercise = sequelize.define('Exercise', {
   workoutId: {
     type: DataTypes.INTEGER,
     references: {
-      model: Workout,
-      key: 'id',
+        model: Workout,
+        key: 'id',
     },
+    onDelete: 'CASCADE', 
   },
 }, {
   timestamps: true,

@@ -63,18 +63,25 @@ router.post('/:workoutId/exercises', auth, async (req, res) => {
 router.get('/:workoutId/exercises', auth, async (req, res) => {
   const { workoutId } = req.params;
   try {
-    const workout = await Workout.findByPk(workoutId);
-    if (!workout || workout.userId !== req.user.id) {
-      return res.status(404).json({ msg: 'Treino não encontrado' });
-    }
+      const workout = await Workout.findByPk(workoutId, {
+          include: [{
+              model: Exercise, 
+              as: 'exercises' 
+          }]
+      });
+      
+      if (!workout || workout.userId !== req.user.id) {
+          return res.status(404).json({ msg: 'Treino não encontrado' });
+      }
 
-    const exercises = await Exercise.findAll({ where: { workoutId } });
-    res.json(exercises);
+      const exercises = workout.exercises;
+      res.json(exercises);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ msg: 'Erro ao obter exercícios' });
+      console.error(err.message);
+      res.status(500).json({ msg: 'Erro ao obter exercícios' });
   }
 });
+
 
 // Rota para atualizar um treino
 router.put('/:workoutId', auth, async (req, res) => {
