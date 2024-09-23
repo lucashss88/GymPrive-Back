@@ -63,18 +63,23 @@ router.post('/:workoutId/exercises', auth, async (req, res) => {
 router.get('/:workoutId/exercises', auth, async (req, res) => {
   const { workoutId } = req.params;
   try {
-      const workout = await Workout.findByPk(workoutId, {
-          include: [{
-              model: Exercise, 
-              as: 'exercises' 
-          }]
-      });
+    const workout = await Workout.findOne({
+      where: { id: workoutId },
+      include: [{
+          model: Exercise,
+          as: 'Exercises',
+      }]
+  });
       
       if (!workout || workout.userId !== req.user.id) {
           return res.status(404).json({ msg: 'Treino não encontrado' });
       }
 
-      const exercises = workout.exercises;
+      const exercises = workout.Exercises;
+      if (exercises.length === 0) {
+        return res.status(404).json({ message: 'Nenhum exercício encontrado para este treino' });
+      }
+
       res.json(exercises);
   } catch (err) {
       console.error(err.message);
