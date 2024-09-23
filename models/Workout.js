@@ -1,7 +1,5 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const User = require('./User');
-const Exercise = require('./Exercise');
 
 const Workout = sequelize.define('Workout', {
   id: {
@@ -22,13 +20,13 @@ const Workout = sequelize.define('Workout', {
     allowNull: false,
   },
   week: {
-    type: DataTypes.ENUM('Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'), 
+    type: DataTypes.ENUM('Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'),
     allowNull: false,
   },
   userId: {
     type: DataTypes.INTEGER,
     references: {
-      model: User,
+      model: 'Users', 
       key: 'id',
     },
   },
@@ -36,8 +34,5 @@ const Workout = sequelize.define('Workout', {
   timestamps: true,
 });
 
-User.hasMany(Workout, { foreignKey: 'userId' });
-Workout.belongsTo(User, { foreignKey: 'userId' });
-Workout.hasMany(Exercise, { as: 'Exercises', foreignKey: 'workoutId' });
-
 module.exports = Workout;
+
