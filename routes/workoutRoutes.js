@@ -65,10 +65,7 @@ router.get('/:workoutId/exercises', auth, async (req, res) => {
   try {
     const workout = await Workout.findOne({
       where: { id: workoutId },
-      include: [{
-          model: Exercise,
-          as: 'Exercises',
-      }]
+      include: [Exercise]
   });
       
       if (!workout || workout.userId !== req.user.id) {
@@ -80,6 +77,10 @@ router.get('/:workoutId/exercises', auth, async (req, res) => {
       if (exercises.length === 0) {
         return res.status(404).json({ message: 'Nenhum exercício encontrado para este treino' });
       }
+
+      if (exercises.length === 0) {
+        return res.status(204).json({ message: 'Nenhum exercício encontrado para este treino' });
+      }      
 
       res.json(exercises);
   } catch (err) {
