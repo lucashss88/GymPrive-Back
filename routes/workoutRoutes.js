@@ -76,6 +76,7 @@ router.get('/:workoutId/exercises', auth, async (req, res) => {
       }
 
       const exercises = workout.Exercises;
+      console.log(req.params.workoutId);
       if (exercises.length === 0) {
         return res.status(404).json({ message: 'Nenhum exercício encontrado para este treino' });
       }
