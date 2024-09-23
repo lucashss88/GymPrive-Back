@@ -36,7 +36,7 @@ router.get('/', auth, async (req, res) => {
 // Rota para adicionar um exercício a um treino específico
 router.post('/:workoutId/exercises', auth, async (req, res) => {
   const { workoutId } = req.params;
-  const { name, reps, load, sets, description } = req.body;
+  const { name, reps, weight, sets, description } = req.body;
   try {
     const workout = await Workout.findByPk(workoutId);
     if (!workout || workout.userId !== req.user.id) {
@@ -47,7 +47,7 @@ router.post('/:workoutId/exercises', auth, async (req, res) => {
       workoutId,
       name,
       reps,
-      load,
+      weight,
       sets,
       description,
     });
@@ -58,6 +58,7 @@ router.post('/:workoutId/exercises', auth, async (req, res) => {
     res.status(500).json({ msg: 'Erro ao adicionar exercício' });
   }
 });
+
 
 // Rota para obter todos os exercícios de um treino específico
 router.get('/:workoutId/exercises', auth, async (req, res) => {
