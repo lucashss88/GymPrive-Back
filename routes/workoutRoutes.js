@@ -34,23 +34,29 @@ router.get('/', auth, async (req, res) => {
 
 // Rota para adicionar um exercício a um treino específico
 router.post('/:workoutId/exercises', auth, async (req, res) => {
+  const { workoutId } = req.params;
+  const { name, reps, weight, sets, description } = req.body;
+
   try {
-    const { workoutId } = req.params;
-    const workout = await Workout.findByPk(workoutId, {
-      include: Exercise,
+    const workout = await Workout.findByPk(workoutId);
+
+    if (!workout) {
+      return res.status(404).json({ msg: 'Treino não encontrado!' });
+    }
+
+    const newExercise = await Exercise.create({
+      name,
+      reps,
+      weight,
+      sets,
+      description,
+      workoutId, 
     });
-    if (!workout || workout.userId !== req.user.id) {
-      return res.status(404).json({ msg: 'Treino não encontrado' });
-    }
-    const exercises = workout.Exercises;
 
-    if (exercises.length === 0) {
-      return res.status(204).json({ msg: 'Nenhum exercício encontrado.' });
-    }
-
-    res.json(exercises);
+    res.status(201).json(newExercise);
   } catch (error) {
-    res.status(500).json({ msg: 'Erro ao recuperar exercícios.' });
+    console.error(error);
+    res.status(500).json({ msg: 'Erro ao criar exercício' });
   }
 });
 
