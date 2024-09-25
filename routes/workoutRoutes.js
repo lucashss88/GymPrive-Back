@@ -1,7 +1,6 @@
 const express = require('express');
 const { auth } = require('./middleware/auth');
-const Workout = require('../models/Workout');
-const Exercise = require('../models/Exercise');
+const { Workout, Exercise } = require('../models');
 const router = express.Router();
 
 // Rota para criar um novo treino
