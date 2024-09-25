@@ -1,4 +1,4 @@
-const sequelize = require('./config/database');
+const { sequelize } = require('./models');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -18,10 +18,6 @@ app.use(bodyParser.json());
 
 app.use('/auth', authRoutes);
 app.use('/workouts', workoutRoutes);
-
-sequelize.sync({ alter: true })
-  .then(() => console.log('Database synchronized...'))
-  .catch(err => console.log('Error: ' + err));
 
 const PORT = process.env.PORT || 3001;
 

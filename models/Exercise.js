@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const Workout = require('./Workout');
 
 const Exercise = sequelize.define('Exercise', {
   id: {
@@ -39,8 +38,6 @@ const Exercise = sequelize.define('Exercise', {
 }, {
   timestamps: true,
 });
-
-Exercise.belongsTo(Workout, { foreignKey: 'workoutId' });
 
 module.exports = Exercise;
 

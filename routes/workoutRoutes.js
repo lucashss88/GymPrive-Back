@@ -38,7 +38,7 @@ router.post('/:workoutId/exercises', auth, async (req, res) => {
   try {
     const { workoutId } = req.params;
     const workout = await Workout.findByPk(workoutId, {
-      include: [Exercise],
+      include: Exercise,
     });
     if (!workout || workout.userId !== req.user.id) {
       return res.status(404).json({ msg: 'Treino não encontrado' });
