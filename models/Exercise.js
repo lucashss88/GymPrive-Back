@@ -16,7 +16,7 @@ const Exercise = sequelize.define('Exercise', {
     allowNull: false,
   },
   weight: {
-    type: DataTypes.FLOAT,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   sets: {
