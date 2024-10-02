@@ -46,19 +46,19 @@ router.post('/:workoutId/exercises', auth, async (req, res) => {
 
     let reps, sets;
     switch (workout.week) {
-      case 1:
+      case 'Semana 1':
         reps = 15;
         sets = 3;
         break;
-      case 2:
+      case 'Semana 2':
         reps = 14;
         sets = 3;
         break;
-      case 3:
+      case 'Semana 3':
         reps = 12;
         sets = 4;
         break;
-      case 4:
+      case 'Semana 4':
         reps = 10;
         sets = 4;
         break;
