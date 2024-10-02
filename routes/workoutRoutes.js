@@ -32,6 +32,36 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+// Rota para obter os treinos do usuário autenticado filtrados pela semana
+router.get('/by-week', auth, async (req, res) => {
+  const { week } = req.query;
+
+  if (!week) {
+    return res.status(400).json({ msg: 'Por favor, forneça uma semana válida' });
+  }
+
+  try {
+    // Busca os treinos do usuário autenticado filtrados pela semana
+    const workouts = await Workout.findAll({
+      where: {
+        userId: req.user.id,
+        week: week
+      }
+    });
+
+    // Se não encontrar nenhum treino para a semana informada
+    if (workouts.length === 0) {
+      return res.status(404).json({ msg: 'Nenhum treino encontrado para essa semana' });
+    }
+
+    res.json(workouts);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Erro ao obter treinos' });
+  }
+});
+
+
 // Rota para adicionar um exercício a um treino específico
 router.post('/:workoutId/exercises', auth, async (req, res) => {
   const { workoutId } = req.params;
