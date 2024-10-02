@@ -44,6 +44,28 @@ router.post('/:workoutId/exercises', auth, async (req, res) => {
       return res.status(404).json({ msg: 'Treino não encontrado!' });
     }
 
+    let reps, sets;
+    switch (workout.week) {
+      case 1:
+        reps = 15;
+        sets = 3;
+        break;
+      case 2:
+        reps = 14;
+        sets = 3;
+        break;
+      case 3:
+        reps = 12;
+        sets = 4;
+        break;
+      case 4:
+        reps = 10;
+        sets = 4;
+        break;
+      default:
+        return res.status(400).json({ msg: 'Semana inválida!' });
+    }
+
     const newExercise = await Exercise.create({
       name,
       reps,

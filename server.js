@@ -10,6 +10,9 @@ const app = express();
 
 app.use(cors(
   {
+    // origin: 'https://gym-prive-front.vercel.app', 
+    // methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+    // allowedHeaders: ['Content-Type', 'x-auth-token']
     origin: '*'
   }
 ));
