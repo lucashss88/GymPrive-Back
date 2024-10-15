@@ -159,6 +159,39 @@ router.put('/:workoutId', auth, async (req, res) => {
   }
 });
 
+// Rota para editar um exercício específico
+router.put('/:workoutId/exercises/:exerciseId', auth, async (req, res) => {
+  const { workoutId, exerciseId } = req.params;
+  const { name, weight, description } = req.body;
+
+  try {
+      const workout = await Workout.findByPk(workoutId);
+
+      if (!workout || workout.userId !== req.user.id) {
+          return res.status(404).json({ msg: 'Treino não encontrado!' });
+      }
+
+      const exercise = await Exercise.findOne({
+          where: {
+              id: exerciseId,
+              workoutId: workoutId,
+          },
+      });
+
+      if (!exercise) {
+          return res.status(404).json({ msg: 'Exercício não encontrado!' });
+      }
+
+      await exercise.update({ name, weight, description });
+
+      res.json(exercise);
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ msg: 'Erro ao atualizar exercício' });
+  }
+});
+
+
 // Rota para excluir um treino
 router.delete('/:workoutId', auth, async (req, res) => {
   const { workoutId } = req.params;
