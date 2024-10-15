@@ -21,6 +21,33 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
+// Atualiza as informações do usuário autenticado
+router.put('/me', auth, async (req, res) => {
+  const { name, email, weight, height, age } = req.body;
+
+  try {
+    const user = await User.findByPk(req.user.id);
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    // Atualiza os dados do usuário
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.weight = weight || user.weight;
+    user.height = height || user.height;
+    user.age = age || user.age;
+
+    await user.save();
+
+    res.json({ user });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+
 // Registro de usuário
 router.post('/register', async (req, res) => {
   const { email, password, name, role, weight, height, age } = req.body;
